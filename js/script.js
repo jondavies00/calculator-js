@@ -14,7 +14,12 @@ const buttonSubtract = document.getElementById('-')
 const buttonMultiply = document.getElementById('*')
 const buttonDivide = document.getElementById('/')
 const buttonClear = document.getElementById('C')
+const buttonExp = document.getElementById('exp')
 const buttonEquals = document.getElementById('=')
+const rangeSlider = document.getElementById('myRange')
+const roundOutput = document.getElementById("round-text");
+
+roundOutput.textContent = rangeSlider.value
 
 const buttonClicked = ''
 const display = document.getElementById('calc-text')
@@ -23,158 +28,267 @@ var newCalculation = true
 var operating = false
 var currentOperation = ''
 var operand1 = 0
-var calculation = ['0','0']
+var calculation = ['0','0', ' ']
+
+displayCurrentCalculation()
+
+rangeSlider.oninput = function() {
+    roundOutput.textContent = this.value;
+}
 
 button1.addEventListener('click', button1_click)
 function button1_click() {
-    displayButtonNumber('1')
+    setOpcode('1')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button2.addEventListener('click', button2_click)
 function button2_click() {
-    displayButtonNumber('2')
+    setOpcode('2')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button3.addEventListener('click', button3_click)
 function button3_click() {
-    displayButtonNumber('3')
+    setOpcode('3')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button4.addEventListener('click', button4_click)
 function button4_click() {
-    displayButtonNumber('4')
+    setOpcode('4')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button5.addEventListener('click', button5_click)
 function button5_click() {
-    displayButtonNumber('5')
+    setOpcode('5')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button6.addEventListener('click', button6_click)
 function button6_click() {
-    displayButtonNumber('6')
+    setOpcode('6')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button7.addEventListener('click', button7_click)
 function button7_click() {
-    displayButtonNumber('7')
+    setOpcode('7')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button8.addEventListener('click', button8_click)
 function button8_click() {
-    displayButtonNumber('8')
+    setOpcode('8')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button9.addEventListener('click', button9_click)
 function button9_click() {
-    displayButtonNumber('9')
+    // displayButtonNumber('9')
+    setOpcode('9')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 button0.addEventListener('click', button0_click)
 function button0_click() {
-    displayButtonNumber('0')
+    setOpcode('0')
+    displayCurrentCalculation()
+    newCalculation = false
 }
 
 buttonPeriod.addEventListener('click', buttonPeriod_click)
 function buttonPeriod_click() {
     if (!display.textContent.includes('.')){
-        displayButtonNumber('.')
+        setOpcode('.')
+        displayCurrentCalculation()
+        newCalculation = false
     }
 }
 
 buttonClear.addEventListener('click', buttonClear_click)
 function buttonClear_click() {
     newCalculation = true
-    displayButtonNumber('C')
+    operating = false
+    calculation = ['0','0',' ']
+
+    displayCurrentCalculation()
 }
 
 buttonAdd.addEventListener('click', buttonAdd_click)
 function buttonAdd_click() {
-    currentOperation = 'add'
-    setOpcode()
-    display.textContent = '+'
-    console.log(calculation[0])
-    operating = true
-    newCalculation = true
-    checkDigitLimit()
+    if (operating) {
+        alert('Already operating.')
+    }
+    else {
+        if (newCalculation){
+            calculation[1] = '0'
+        }
+        currentOperation = 'add'
+        // setOpcode()
+        setOperand('+')
+        console.log(calculation[0])
+        operating = true
+        newCalculation = true
+        checkDigitLimit()
+        displayCurrentCalculation()
+    }
 }
 
 buttonSubtract.addEventListener('click', buttonSubtract_click)
 function buttonSubtract_click() {
-    currentOperation = 'subtract'
-    setOpcode()
-    display.textContent = '-'
-    operating = true
-    newCalculation = true
-    checkDigitLimit()
+    if (operating) {
+        alert('Already operating.')
+    }
+    else {
+        if (newCalculation){
+            calculation[1] = '0'
+        }
+        currentOperation = 'subtract'
+        //setOpcode()
+        setOperand('-')
+        operating = true
+        newCalculation = true
+        checkDigitLimit()
+        displayCurrentCalculation()
+    }
 }
 
 buttonMultiply.addEventListener('click', buttonMultiply_click)
 function buttonMultiply_click() {
-    currentOperation = 'multiply'
-    setOpcode()
-    display.textContent = '×'
-    operating = true
-    newCalculation = true
-    checkDigitLimit()
+    if (operating) {
+        alert('Already operating.')
+    }
+    else {
+        if (newCalculation){
+            calculation[1] = '0'
+        }
+        currentOperation = 'multiply'
+        //setOpcode()
+        setOperand('×')
+        operating = true
+        newCalculation = true
+        checkDigitLimit()
+        displayCurrentCalculation()
+    }
 }
 
 buttonDivide.addEventListener('click', buttonDivide_click)
 function buttonDivide_click() {
-    currentOperation = 'divide'
-    setOpcode()
-    display.textContent = '÷'
-    operating = true
-    newCalculation = true
-    checkDigitLimit()
+    if (operating) {
+        alert('Already operating.')
+    }
+    else {
+        if (newCalculation){
+            calculation[1] = '0'
+        }
+        currentOperation = 'divide'
+        //setOpcode()
+        setOperand('÷')
+        operating = true
+        newCalculation = true
+        checkDigitLimit()
+        displayCurrentCalculation()
+    }
+
+
+}
+
+buttonExp.addEventListener('click', buttonExp_click)
+function buttonExp_click() {
+    if (operating) {
+        alert('Already operating.')
+    }
+    else {
+        currentOperation = 'exponentiate'
+        //setOpcode()
+        setOperand('exp')
+        // num = calculation[0]
+        // display.innerHTML = num + '<sup>y<\sup>'
+        operating = true
+        newCalculation = true
+        checkDigitLimit()
+        displayCurrentCalculation()
+    }
+
+
 }
 
 buttonEquals.addEventListener('click', buttonEquals_click)
 function buttonEquals_click() {
-    setOpcode()
+    // setOpcode()
     console.log(calculation[0])
     console.log(calculation[1])
     
     if (currentOperation == 'add'){
-        display.textContent = parseFloat(calculation[0]) + parseFloat(calculation[1])
+        result = parseFloat(calculation[0]) + parseFloat(calculation[1])
+        // display.textContent = String(result)
     }
     else if (currentOperation == 'subtract'){
-        display.textContent = parseFloat(calculation[0]) - parseFloat(calculation[1])
+        result = parseFloat(calculation[0]) - parseFloat(calculation[1])
     }
     else if (currentOperation == 'multiply'){
-        display.textContent = parseFloat(calculation[0]) * parseFloat(calculation[1])
+        result= parseFloat(calculation[0]) * parseFloat(calculation[1])
     }
     else if (currentOperation == 'divide'){
-        display.textContent = parseFloat(calculation[0]) / parseFloat(calculation[1])
+        result = parseFloat(calculation[0]) / parseFloat(calculation[1])
     }
-    operating = false
-    checkDigitLimit()
-}
-
-function setOpcode(){
-    if (!operating) {
-        calculation[0] = display.textContent
+    else if (currentOperation == 'exponentiate'){
+        result = parseFloat(calculation[0]) ** parseFloat(calculation[1])
     }
-    else{
-        calculation[1] = display.textContent
+    if (String(result).includes('.')){
+        display.textContent = Math.round(result * (10**rangeSlider.value)) / (10 ** rangeSlider.value)
     }
-}
-
-function displayButtonNumber(num) {
+    else {
+        display.textContent = result
+    }
     
-    if (newCalculation){
-        if (num == 'C'){
-            display.textContent = '0' 
-        }
-        else{
-            display.textContent = num
-            newCalculation = false
-        }
-    }
-    else{
-        display.textContent += num
-    }
+    operating = false
+    newCalculation = true
+    setOpcode(String(result))
+    
     checkDigitLimit()
+    
+}
+
+function setOpcode(strNumber){
+    if (!operating && newCalculation) {
+        calculation[0] = strNumber
+    }
+    else if (!operating && !newCalculation) {
+        calculation[0] += strNumber
+    }
+    else if (operating && newCalculation) {
+        calculation[1] = strNumber
+    }
+    else if (operating && !newCalculation) {
+        calculation[1] += strNumber
+    }
+}
+
+function setOperand(strOperation) {
+    calculation[2] = strOperation
+}
+
+
+function displayCurrentCalculation () {
+    if (calculation[2] == 'exp') {
+        display.innerHTML = calculation[0] + "<sup>" + calculation[1] + "</sup>"
+    }
+    else {
+        display.textContent = calculation[0] + calculation[2] + calculation[1]
+    }
+    
 }
 
 function checkDigitLimit() {
